@@ -1,6 +1,6 @@
-# Seroai Trusthub
+# Sero AI Trusthub
 
-<!--About the Seroai Trusthub-->
+<!--About the Sero AI Trusthub-->
 
 <p align="center">
    <a href="https://github.com/seroai-coders/seroai-trusthub/stargazers"><img src="https://img.shields.io/github/stars/seroai-coders/seroai-trusthub" alt="Github Stars"></a>
@@ -23,7 +23,7 @@ Please follow these simple steps to get a local copy up and running.
 
 ### Prerequisites
 
-- Node.js (Version: >=18.x)
+- Node.js (Version: >=21.x)
 - PostgreSQL
 - PNPM
 
