@@ -11,11 +11,13 @@
 ## 🛠️ Built With
 
 - [Next.js](https://nextjs.org)
-- [Tailwind CSS](https://tailwindcss.com)
-- [Postgres](https://www.postgresql.org)
 - [React](https://reactjs.org)
+- [Postgres](https://www.postgresql.org)
 - [Prisma](https://www.prisma.io)
 - [TypeScript](https://www.typescriptlang.org)
+- [Tailwind CSS](https://tailwindcss.com)
+- [DaisyUI](https://daisyui.com)
+- [Tremor](https://www.tremor.so)
 
 ## ✨ Getting Started
 
