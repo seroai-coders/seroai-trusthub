@@ -9,11 +9,16 @@ const config: Config = {
     "./node_modules/@tremor/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      height: {
+        header: "4rem",
+        content: "calc(100vh - 4rem)",
+      },
+    },
   },
   plugins: [daisyui],
   daisyui: {
-    themes: ["light", "dark", "forest"],
+    themes: ["light", "dark", "forest", "nord", "sunset"],
   },
 };
 

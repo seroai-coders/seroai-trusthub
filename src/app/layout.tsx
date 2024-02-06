@@ -17,9 +17,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <div className="flex justify-center items-center min-h-screen">
-          {children}
-        </div>
+        <div className="min-h-screen overflow-x-hidden grid">{children}</div>
       </body>
     </html>
   );
