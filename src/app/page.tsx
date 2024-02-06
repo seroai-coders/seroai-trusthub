@@ -1,6 +1,6 @@
 export default function Home() {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24 bg-base-100 text-base-content">
+    <main className="flex justify-center items-center min-h-screen">
       Sero AI Trusthub
     </main>
   );
