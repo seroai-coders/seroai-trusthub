@@ -16,7 +16,7 @@ export default function Error({
   }, [error]);
 
   return (
-    <div className="w-96 m-auto">
+    <div className="w-96">
       <Card>
         <div className="flex flex-col justify-center items-center space-y-4">
           <h2>Something went wrong!</h2>
