@@ -35,7 +35,6 @@ type ButtonVariantProps = VariantProps<typeof buttonVariants>;
 
 interface ButtonProps extends ButtonVariantProps {
   className?: string;
-  outline?: boolean;
   onClick?: () => void;
 }
 
