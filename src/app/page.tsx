@@ -1,3 +1,5 @@
-export default function Home() {
-  return <main className="flex justify-center">Sero AI Trusthub</main>;
+import { redirect } from "next/navigation";
+
+export default function Page() {
+  return redirect("/case");
 }
