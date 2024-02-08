@@ -2,7 +2,6 @@
 import React, { useEffect } from "react";
 import dynamic from "next/dynamic";
 import Loader from "@/components/ui/Loader";
-import { LoginButton } from "./LoginButton";
 import { useUser } from "@auth0/nextjs-auth0/client";
 import { UserInfo } from "./UserInfo";
 
@@ -20,13 +19,11 @@ function Header() {
   return (
     <>
       <header className="fixed top-0 z-50 flex h-header w-full shrink-0 items-center justify-between bg-gradient-to-b from-background/10 via-background/50 to-background/80 px-4 backdrop-blur-lg">
-        <div>{user ? <Sidebar /> : null}</div>
+        <Sidebar />
         {isLoading ? (
           <div className="w-16 h-4 skeleton"></div>
-        ) : user ? (
-          <UserInfo user={user} />
         ) : (
-          <LoginButton />
+          <UserInfo user={user} />
         )}
       </header>
       <div className="h-header" />
