@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { UserProvider } from "@auth0/nextjs-auth0/client";
 import { Inter } from "next/font/google";
 import "./globals.css";
 
@@ -21,7 +22,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.variable}>
-        <div className="min-h-screen overflow-x-hidden grid">{children}</div>
+        <UserProvider>
+          <div className="min-h-screen overflow-x-hidden grid">{children}</div>
+        </UserProvider>
       </body>
     </html>
   );

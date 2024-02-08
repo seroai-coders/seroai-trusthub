@@ -105,7 +105,22 @@ const config: Config = {
   },
   plugins: [daisyui],
   daisyui: {
-    themes: ["light", "dark"],
+    themes: [
+      {
+        seroTheme: {
+          primary: "#2094f3",
+          secondary: "#ff0000",
+          accent: "#48a2d4",
+          neutral: "#3d4451",
+          "base-100": "#ffffff",
+          info: "#2094f3",
+          success: "#009485",
+          warning: "#ff9900",
+          error: "#eb1947",
+        },
+      },
+      "dark",
+    ],
   },
 };
 
