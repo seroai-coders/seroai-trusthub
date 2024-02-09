@@ -1,0 +1,119 @@
+datasource db {
+  provider = 'postgresql'
+  url = env("POSTGRES_PRISMA_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+abstract model Base {
+  id String @id @default(cuid())
+  createdAt DateTime @default(now()) @db.Timestamptz(6)
+  updatedAt DateTime @updatedAt() @db.Timestamptz(6)
+
+  @@allow('read, create, update', auth() != null)
+  @@allow('all', auth().role == Admin)
+}
+
+enum Role {
+  Admin
+  User
+}
+
+model User {
+  id String @id @default(cuid())
+  name String?
+  email String @unique @email
+  role Role @default(User)
+
+  createdByCases Case[] @relation(name: "createdBy")
+  assignedToCases Case[] @relation(name: "assignedTo")
+  notes Note[]
+  caseLogs CaseLog[]
+
+  @@allow('create', true)
+  @@allow('all', auth() == this || auth().role == Admin)
+}
+
+enum InvolvedPartyType {
+  LAW_ENFORCEMENT
+  REPORTING_USER
+  REPORTED_USER
+}
+
+model Identifier {
+  id String @id @default(cuid())
+  type String
+  name String
+
+  involvedParties InvolvedParty[]
+
+  @@allow('read, create, update', auth() != null)
+  @@allow('all', auth().role == Admin)
+}
+
+model InvolvedParty {
+  id String @id @default(cuid())
+  name String
+  type InvolvedPartyType
+  identifiers Identifier[]
+
+  cases Case[]
+
+  @@allow('read, create, update', auth() != null)
+  @@allow('all', auth().role == Admin)
+}
+
+model Note extends Base {
+  description String @db.Text
+
+  createdById String
+  createdBy User @relation(fields: [createdById], references: [id])
+
+  caseId String
+  case Case @relation(fields: [caseId], references: [id])
+}
+
+enum CaseLogType {
+  ADD
+  DELETE
+  UPDATE
+}
+
+model CaseLog extends Base {
+  fieldName String
+  type CaseLogType
+  fromValue String
+  toValue String
+
+  createdById String
+  createdBy User @relation(fields: [createdById], references: [id])
+
+  caseId String
+  case Case @relation(fields: [caseId], references: [id])
+}
+
+enum CaseSeverity {
+  URGENT
+  HIGH
+  MEDIUM
+  LOW
+}
+
+model Case extends Base {
+  createdById String
+  createdBy User @relation(fields: [createdById], references: [id], name: "createdBy")
+
+  title String
+  description String? @db.Text
+  caseLogs CaseLog[]
+  notes Note[]
+  caseStatus String?
+  involvedParties InvolvedParty[]
+  documentLinks Json[]
+  severity CaseSeverity @default(MEDIUM)
+  assignedToId String?
+  assignedTo User? @relation(fields: [assignedToId], references: [id], name: "assignedTo")
+  caseInputData Json?
+}
