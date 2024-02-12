@@ -118,3 +118,9 @@ model Case {
     assignedTo User? @relation(fields: [assignedToId], references: [id], name: "assignedTo")
     caseInputData Json?
 }
+
+model Settings {
+    id String @id() @default(cuid())
+    caseStatuses String[]
+    caseInputSchema Json?
+}
