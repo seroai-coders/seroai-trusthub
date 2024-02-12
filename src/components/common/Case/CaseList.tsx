@@ -9,7 +9,7 @@ import {
 import { Text } from "@tremor/react";
 import { loadCases } from "@/lib/api/case";
 import SeverityRenderer from "../GridRenderer/SeverityRenderer";
-import { CaseFiltersValueProps } from "@/lib/types/CaseFilters";
+import { CaseFiltersValueProps } from "@/lib/types/case";
 
 const CaseList = async ({ filters }: { filters?: CaseFiltersValueProps }) => {
   const data = await loadCases(filters);

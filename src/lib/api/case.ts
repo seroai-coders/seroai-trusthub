@@ -1,6 +1,6 @@
 import { Prisma } from "@prisma/client";
 import { SecurePrisma } from "../prisma";
-import { CaseFiltersValueProps } from "../types/CaseFilters";
+import { CaseFiltersValueProps } from "../types/case";
 
 export const loadCases = async (filters?: CaseFiltersValueProps) => {
   const prisma = await SecurePrisma();

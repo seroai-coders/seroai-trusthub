@@ -4,7 +4,7 @@ import { CreateCase } from "@/components/common/Case/CreateCase";
 import { createCase } from "@/lib/api/case";
 import { loadSettings } from "@/lib/api/settings";
 import { loadUsers } from "@/lib/api/users";
-import { CaseFiltersValueProps } from "@/lib/types/CaseFilters";
+import { CaseFiltersValueProps } from "@/lib/types/case";
 
 const mapSearchParamsToFilters = ({
   assignedTo,
