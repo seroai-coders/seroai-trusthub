@@ -24,17 +24,19 @@ const buttonVariants = cva("btn", {
     },
     size: {
       lg: "btn-lg",
+      md: "min-h-11 h-11",
       sm: "btn-sm",
       xs: "btn-xs",
     },
   },
-  defaultVariants: { color: "primary" },
+  defaultVariants: { color: "primary", size: "md" },
 });
 
 type ButtonVariantProps = VariantProps<typeof buttonVariants>;
 
 interface ButtonProps extends ButtonVariantProps {
   className?: string;
+  disabled?: boolean;
   onClick?: () => void;
 }
 
