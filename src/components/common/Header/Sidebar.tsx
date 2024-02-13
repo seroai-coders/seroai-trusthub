@@ -13,6 +13,9 @@ function SidebarContent() {
         <li>
           <NavButton link="/userHistory">User History</NavButton>
         </li>
+        <li>
+          <NavButton link="/settings">Settings</NavButton>
+        </li>
       </ul>
       <div className="divider" />
       <LogoutButton />

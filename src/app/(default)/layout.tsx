@@ -1,3 +1,4 @@
+import Global from "@/components/common/Global";
 import Header from "@/components/common/Header/Header";
 
 export default function Layout({
@@ -6,9 +7,10 @@ export default function Layout({
   children: React.ReactNode;
 }>) {
   return (
-    <div>
+    <div className="mb-10">
       <Header />
       {children}
+      <Global />
     </div>
   );
 }
