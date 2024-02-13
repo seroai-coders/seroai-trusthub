@@ -14,11 +14,6 @@ const Filters: FC<FiltersProps> = () => {
     searchParams.get("identifier") ?? ""
   );
 
-  // useEffect(() => {
-  //   if (searchParams.get("identifier") !== identifierQuery)
-  //     setIdentifierQuery(searchParams.get("identifier") ?? "");
-  // }, [searchParams, identifierQuery]);
-
   return (
     <div className="flex items-end space-x-2 mb-8">
       <Input
