@@ -1,3 +1,33 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.Mui-MultiColumn {
+  & > .MuiFormControl-root > .MuiGrid-container > .MuiGrid-item {
+    @apply flex-1 min-w-[100%] lg:min-w-[50%];
+  }
+}
+
+.Mui-Array-NoBorders {
+  & .MuiPaper-root {
+    @apply shadow-none;
+
+    & .MuiBox-root {
+      @apply px-1 py-0 !mb-0;
+    }
+
+    & .MuiGrid-root {
+      @apply !mt-0 pt-0;
+    }
+
+    & .css-13i4rnv-MuiGrid-root {
+      @apply !mb-5 self-end;
+    }
+  }
+}
+
+.Mui-Object-NoSpacing {
+  & .MuiGrid-root {
+    @apply !mt-0 !py-0;
+  }
+}

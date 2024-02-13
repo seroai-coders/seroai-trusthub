@@ -118,3 +118,11 @@ model Case {
     assignedTo User? @relation(fields: [assignedToId], references: [id], name: "assignedTo")
     caseInputData Json?
 }
+
+/// @@allow('read', auth() != null)
+/// @@allow('all', auth().role == Admin)
+model Settings {
+    id String @id() @default(cuid())
+    caseStatuses String[]
+    caseInputSchema Json?
+}
