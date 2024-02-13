@@ -24,3 +24,16 @@ export const createCase = async (
 
   return prisma.case.create({ data });
 };
+
+export const loadCasesByIdentifier = async (identifier: string) => {
+  const prisma = await SecurePrisma();
+
+  return prisma.case.findMany({
+    where: {
+      involvedParties: {
+        some: { identifiers: { some: { name: identifier } } },
+      },
+    },
+    orderBy: { createdAt: "desc" },
+  });
+};
