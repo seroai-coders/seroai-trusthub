@@ -15,10 +15,14 @@ import { Severity } from "./Severity";
 import { Status } from "./Status";
 import CaseInputData from "./CaseInputData";
 import { DocumentLink, DocumentLinks } from "./DocumentLinks";
+import InvolvedParties from "./InvolvedParties";
 
 const CaseManagement = ({
   data,
   updateCase,
+  createInvolvedParty,
+  updateInvolvedParty,
+  deleteInvolvedParty,
   users,
   settings,
 }: {
@@ -31,6 +35,15 @@ const CaseManagement = ({
       })
     | null;
   updateCase: (data: Prisma.CaseUpdateArgs) => Promise<Case>;
+  createInvolvedParty: (
+    data: Prisma.InvolvedPartyCreateArgs
+  ) => Promise<InvolvedParty>;
+  updateInvolvedParty: (
+    data: Prisma.InvolvedPartyUpdateArgs
+  ) => Promise<InvolvedParty>;
+  deleteInvolvedParty: (
+    data: Prisma.InvolvedPartyDeleteArgs
+  ) => Promise<InvolvedParty>;
   users: User[];
   settings: Settings | null;
 }) => {
@@ -74,10 +87,13 @@ const CaseManagement = ({
         </div>
         <Divider />
         <div className="flex flex-col space-y-4">
-          {/* <InvolvedParties
+          <InvolvedParties
             value={data?.involvedParties ?? []}
-            caseId={caseId}
-          /> */}
+            caseId={data?.id ?? ""}
+            createInvolvedParty={createInvolvedParty}
+            updateInvolvedParty={updateInvolvedParty}
+            deleteInvolvedParty={deleteInvolvedParty}
+          />
           <DocumentLinks
             value={data?.documentLinks as unknown as DocumentLink[]}
             onSave={onSave}

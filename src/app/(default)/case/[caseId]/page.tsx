@@ -4,6 +4,11 @@ import { createNote, findCaseById, updateCase } from "@/lib/api/case";
 import { Prisma } from "@prisma/client";
 import { loadUsers } from "@/lib/api/users";
 import { loadSettings } from "@/lib/api/settings";
+import {
+  createInvolvedParty,
+  deleteInvolvedParty,
+  updateInvolvedParty,
+} from "@/lib/api/involveParty";
 
 const CaseManagement = dynamic(
   () => import("@/components/common/Case/EditCase/CaseManagement"),
@@ -39,6 +44,27 @@ export default async function CasePage({
     return updateCase(data);
   };
 
+  const onCreateInvolvedParty = async (
+    data: Prisma.InvolvedPartyCreateArgs
+  ) => {
+    "use server";
+    return createInvolvedParty(data);
+  };
+
+  const onUpdateInvolvedParty = async (
+    data: Prisma.InvolvedPartyUpdateArgs
+  ) => {
+    "use server";
+    return updateInvolvedParty(data);
+  };
+
+  const onDeleteInvlovedParty = async (
+    data: Prisma.InvolvedPartyDeleteArgs
+  ) => {
+    "use server";
+    return deleteInvolvedParty(data);
+  };
+
   return (
     <div className="flex justify-center w-full layout-offset -mb-10">
       <div className="grid grid-cols-5 w-full">
@@ -46,6 +72,9 @@ export default async function CasePage({
           <CaseManagement
             data={caseData}
             updateCase={onUpdateCase}
+            createInvolvedParty={onCreateInvolvedParty}
+            updateInvolvedParty={onUpdateInvolvedParty}
+            deleteInvolvedParty={onDeleteInvlovedParty}
             users={users}
             settings={settings}
           />
