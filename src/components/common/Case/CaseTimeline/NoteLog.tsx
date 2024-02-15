@@ -38,8 +38,9 @@ export const NoteLog = ({
           </span>
         </div>
         <Button
-          variant="ghost"
+          variant="iconGhost"
           color="neutral"
+          size="sm"
           onClick={() => {
             setIsEditNote(!isEditNote);
           }}
