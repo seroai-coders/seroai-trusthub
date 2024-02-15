@@ -11,6 +11,7 @@ interface ReactSelectProps<T> {
   label?: string;
   name: string;
   onChange: (newValue: T) => void;
+  onBlur?: () => void;
   isRequired?: boolean;
   customComponents?: {
     SingleValue?: (props: SingleValueProps<T>) => JSX.Element;
@@ -21,6 +22,7 @@ interface ReactSelectProps<T> {
   placeholder?: string;
   varient?: "filter" | "default";
   isClearable?: boolean;
+  autoFocus?: boolean;
 }
 
 const Dropdown = <T,>({
@@ -32,6 +34,7 @@ const Dropdown = <T,>({
   label = "",
   name,
   onChange,
+  onBlur,
   isRequired = false,
   customComponents = {},
   menuPortalTarget = null,
@@ -39,6 +42,7 @@ const Dropdown = <T,>({
   placeholder = "Select...",
   varient = "default",
   isClearable = false,
+  autoFocus = false,
 }: ReactSelectProps<T>) => {
   return (
     <div className="form-control text-base-content">
@@ -70,6 +74,8 @@ const Dropdown = <T,>({
         isLoading={isLoading}
         placeholder={placeholder}
         theme={getTheme}
+        onBlur={onBlur}
+        autoFocus={autoFocus}
       />
     </div>
   );

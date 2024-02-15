@@ -8,8 +8,9 @@ import {
 } from "@/components/ui/Table";
 import { Text } from "@tremor/react";
 import { loadCases } from "@/lib/api/case";
-import SeverityRenderer from "../GridRenderer/SeverityRenderer";
 import { CaseFiltersValueProps } from "@/lib/types/case";
+import CaseListRow from "./CaseListRow";
+import SeverityRenderer from "../../GridRenderer/SeverityRenderer";
 
 const CaseList = async ({ filters }: { filters?: CaseFiltersValueProps }) => {
   const data = await loadCases(filters);
@@ -26,14 +27,7 @@ const CaseList = async ({ filters }: { filters?: CaseFiltersValueProps }) => {
       </TableHead>
       <TableBody>
         {data?.map((item) => (
-          <TableRow
-            key={item.id}
-            className="hover:bg-primary hover:bg-opacity-10 cursor-pointer"
-            // onClick={() => {
-            // TODO: Add routing
-            //   // router.push(createPath(orgName, `case/${item.id}`));
-            // }}
-          >
+          <CaseListRow key={item.id} caseId={item.id}>
             <TableCell className="font-medium">{item.title}</TableCell>
             <TableCell>
               <SeverityRenderer data={item} />
@@ -42,7 +36,7 @@ const CaseList = async ({ filters }: { filters?: CaseFiltersValueProps }) => {
             <TableCell>
               <Text>{item.assignedTo?.name}</Text>
             </TableCell>
-          </TableRow>
+          </CaseListRow>
         ))}
       </TableBody>
     </Table>

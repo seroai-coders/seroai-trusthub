@@ -26,11 +26,11 @@ const Modal: React.FC<ModalProps> = ({
       <div className={clsx("modal-box", modalBoxClassName)}>
         {showCloseButton && (
           <Button
-            variant="secondary"
-            className="absolute right-2 top-2"
+            variant="ghost"
+            className="absolute right-3 top-3"
             onClick={onClose}
           >
-            <AiOutlineClose />
+            <AiOutlineClose size={18} />
           </Button>
         )}
         <h3 className="font-bold text-lg">{title}</h3>
