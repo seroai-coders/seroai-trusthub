@@ -13,6 +13,7 @@ import { Description } from "./Description";
 import { AssignedTo } from "./AssignedTo";
 import { Severity } from "./Severity";
 import { Status } from "./Status";
+import CaseInputData from "./CaseInputData";
 
 const CaseManagement = ({
   data,
@@ -72,18 +73,22 @@ const CaseManagement = ({
         </div>
         <Divider />
         {/* <div className="flex flex-col space-y-4">
-            <Tickets value={data?.tickets ?? []} caseId={caseId} />
-            <InvolvedParties
-              value={data?.involvedParties ?? []}
-              caseId={caseId}
-            />
-            <DocumentLinks
-              value={data?.documentLinks as unknown as DocumentLink[]}
-              caseId={caseId}
-            />
-          </div>
-          <Divider />
-          <CaseInputData data={data!} organisationData={organisationData!} /> */}
+          <Tickets value={data?.tickets ?? []} caseId={caseId} />
+          <InvolvedParties
+            value={data?.involvedParties ?? []}
+            caseId={caseId}
+          />
+          <DocumentLinks
+            value={data?.documentLinks as unknown as DocumentLink[]}
+            caseId={caseId}
+          />
+        </div> */}
+        <Divider />
+        <CaseInputData
+          data={data?.caseInputData ?? {}}
+          settings={settings}
+          onSave={onSave}
+        />
       </div>
     </div>
   );
