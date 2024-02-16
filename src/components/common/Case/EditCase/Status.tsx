@@ -35,6 +35,7 @@ export const Status = ({
         onBlur={() => setIsEditing(false)}
         options={caseStatusOptions ?? []}
         autoFocus
+        defaultMenuIsOpen
       />
     </EditMode>
   );

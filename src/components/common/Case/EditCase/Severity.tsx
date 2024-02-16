@@ -40,6 +40,7 @@ export const Severity = ({
         options={caseSeverityOptions ?? []}
         customComponents={{ SingleValue, Option }}
         autoFocus
+        defaultMenuIsOpen
       />
     </EditMode>
   );

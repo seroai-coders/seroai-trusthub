@@ -1,5 +1,5 @@
 "use server";
-import { Prisma } from "@prisma/client";
+import { CaseLogType, CaseSeverity, Prisma } from "@prisma/client";
 import { SecurePrisma } from "../prisma";
 import { CaseFiltersValueProps } from "../types/case";
 
@@ -44,7 +44,30 @@ export const createCase = async (
 export const updateCase = async (data: Prisma.CaseUpdateArgs) => {
   const prisma = await SecurePrisma();
 
-  return prisma.case.update(data);
+  return prisma.$transaction(async (tx) => {
+    const caseData = await tx.case.update(data);
+
+    const [log] = await tx.caseLog.findMany({
+      where: { fieldName: "severity", caseId: caseData.id },
+      orderBy: { createdAt: "desc" },
+      take: 1,
+    });
+
+    if (log?.toValue !== caseData?.severity) {
+      prisma.caseLog.create({
+        data: {
+          caseId: caseData.id,
+          createdById: caseData.createdById,
+          fieldName: "severity",
+          type: CaseLogType.UPDATE,
+          fromValue: log?.toValue ?? CaseSeverity.MEDIUM,
+          toValue: caseData?.severity ?? "",
+        },
+      });
+    }
+
+    return caseData;
+  });
 };
 
 export const loadCasesByIdentifier = async (identifier: string) => {
