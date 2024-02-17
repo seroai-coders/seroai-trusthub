@@ -27,7 +27,6 @@ export default async function CasePage({
 }: {
   params: { caseId: string };
 }) {
-  console.log(caseId);
   const [caseData, users, settings] = await Promise.all([
     findCaseById(caseId),
     loadUsers(),
@@ -87,7 +86,7 @@ export default async function CasePage({
             </div>
           </div>
           <div className="px-20 pb-6 flex items-end">
-            <CaseTimeline caseId={caseId as string} />
+            <CaseTimeline caseId={caseId as string} settings={settings} />
           </div>
         </div>
       </div>

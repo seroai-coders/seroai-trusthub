@@ -12,11 +12,9 @@ export default async function Settings() {
   const saveSettings = async (data: Partial<Settings>) => {
     "use server";
 
-    if (data.id) {
-      updateSettings(data as Prisma.SettingsUpdateInput);
-    } else {
-      createSettings(data as Prisma.SettingsCreateInput);
-    }
+    return data.id
+      ? updateSettings(data as Prisma.SettingsUpdateInput)
+      : createSettings(data as Prisma.SettingsCreateInput);
   };
 
   return <CaseSettings data={data} saveData={saveSettings} />;

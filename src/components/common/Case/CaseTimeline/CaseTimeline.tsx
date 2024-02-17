@@ -4,8 +4,16 @@ import { NoteLog, NoteLogType } from "./NoteLog";
 import Timeline from "@/components/ui/Timeline";
 import { ActivityLog, ActivityLogType } from "./ActivityLog";
 import { loadCaseLogs } from "@/lib/api/case";
+import PoliciesLog, { PolicyLogType } from "./PoliciesLog";
+import { Settings } from "@prisma/client";
 
-const CaseTimeline = async ({ caseId }: { caseId: string }) => {
+const CaseTimeline = async ({
+  caseId,
+  settings,
+}: {
+  caseId: string;
+  settings: Settings | null;
+}) => {
   const caseLogs = await loadCaseLogs(caseId);
 
   return (
@@ -14,6 +22,13 @@ const CaseTimeline = async ({ caseId }: { caseId: string }) => {
         children:
           item.fieldName === "note" ? (
             <NoteLog data={item as NoteLogType} />
+          ) : item.fieldName === "policies" ? (
+            <PoliciesLog
+              data={item as PolicyLogType}
+              policies={
+                settings?.policies.map((id) => ({ id, title: id })) ?? []
+              }
+            />
           ) : item.fieldName === "severity" ? (
             <SeverityLog data={item as SeverityType} />
           ) : (

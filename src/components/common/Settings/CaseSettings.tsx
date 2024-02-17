@@ -2,10 +2,11 @@
 import { CreatableSelect } from "@/components/ui/ReactSelect";
 import { useLoader } from "@/lib/hooks/useLoader";
 import { useNotification } from "@/lib/hooks/useNotification";
-import { FC, useState } from "react";
+import { FC } from "react";
 import { Settings } from "@prisma/client";
 import CaseInputSchema from "./CaseInputSchema";
 import { Divider } from "@tremor/react";
+import { MultiValue } from "react-select";
 
 export interface CaseSettingsProps {
   data: Settings | null;
@@ -13,19 +14,19 @@ export interface CaseSettingsProps {
 }
 
 const CaseSettings: FC<CaseSettingsProps> = ({ data, saveData }) => {
-  const [caseStatuses, setCaseStatuses] = useState<string[]>(
-    data?.caseStatuses ?? []
-  );
   const { showLoader } = useLoader();
   const { notifySuccess, notifyError } = useNotification();
+
+  const isValueValid = (
+    inputValue: string,
+    selectedValue: MultiValue<string>
+  ) => !selectedValue.includes(inputValue);
 
   return (
     <div className="px-20">
       <CreatableSelect
-        value={caseStatuses ?? []}
+        value={data?.caseStatuses ?? []}
         onChange={async (newValue) => {
-          setCaseStatuses(newValue as string[]);
-
           showLoader(true);
           try {
             await saveData({
@@ -33,18 +34,37 @@ const CaseSettings: FC<CaseSettingsProps> = ({ data, saveData }) => {
               caseStatuses: newValue as string[],
             });
             notifySuccess(`Status updation successful`);
-          } catch {
+          } catch (e) {
             notifyError(`Status updation failed`);
           } finally {
             showLoader(false);
           }
         }}
         label="Status"
-        name="status1"
+        name="status"
         isClearable
-        isValueValid={(inputValue, selectedValue) =>
-          !selectedValue.includes(inputValue)
-        }
+        isValueValid={isValueValid}
+      />
+      <CreatableSelect
+        value={data?.policies ?? []}
+        onChange={async (newValue) => {
+          showLoader(true);
+          try {
+            await saveData({
+              ...(data ?? {}),
+              policies: newValue as string[],
+            });
+            notifySuccess(`Policy updation successful`);
+          } catch {
+            notifyError(`Policy updation failed`);
+          } finally {
+            showLoader(false);
+          }
+        }}
+        label="Policies"
+        name="policies"
+        isClearable
+        isValueValid={isValueValid}
       />
       <Divider />
       <CaseInputSchema data={data} saveData={saveData} />

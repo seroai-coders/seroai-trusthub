@@ -34,10 +34,8 @@ const CreatableSelect = ({
   isClearable = false,
   isValueValid = () => true,
   isLoading = false,
-  ...props
 }: CreatableSelectProps & ComponentProps<typeof ReactCreatableSelect>) => {
   const [inputValue, setInputValue] = useState("");
-  console.log("props", props);
   const handleKeyDown: KeyboardEventHandler = (event) => {
     if (!inputValue) return;
     switch (event.key) {

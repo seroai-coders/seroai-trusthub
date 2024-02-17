@@ -16,6 +16,9 @@ import { Status } from "./Status";
 import CaseInputData from "./CaseInputData";
 import { DocumentLink, DocumentLinks } from "./DocumentLinks";
 import InvolvedParties from "./InvolvedParties";
+import { useLoader } from "@/lib/hooks/useLoader";
+import { useNotification } from "@/lib/hooks/useNotification";
+import { Policies } from "./Policies";
 
 const CaseManagement = ({
   data,
@@ -47,15 +50,23 @@ const CaseManagement = ({
   users: User[];
   settings: Settings | null;
 }) => {
-  // TODO: Add Severity into Logs
+  const { notifyError } = useNotification();
+  const { showLoader } = useLoader();
 
-  const onSave = (
+  const onSave = async (
     updatedData: Prisma.CaseUpdateInput | Prisma.CaseUncheckedUpdateInput
   ) => {
-    updateCase({
-      data: updatedData,
-      where: { id: data?.id ?? "" },
-    });
+    showLoader(true);
+    try {
+      updateCase({
+        data: updatedData,
+        where: { id: data?.id ?? "" },
+      });
+    } catch {
+      notifyError(`Case updation failed`);
+    } finally {
+      showLoader(false);
+    }
   };
 
   return (
@@ -83,6 +94,11 @@ const CaseManagement = ({
             value={data?.caseStatus}
             onChange={(caseStatus) => onSave({ caseStatus })}
             caseStatuses={settings?.caseStatuses ?? []}
+          />
+          <Policies
+            value={data?.policies ?? []}
+            onChange={(policies) => onSave({ policies })}
+            policies={settings?.policies ?? []}
           />
         </div>
         <Divider />

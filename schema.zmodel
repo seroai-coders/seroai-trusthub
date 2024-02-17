@@ -110,6 +110,7 @@ model Case extends Base {
   caseLogs CaseLog[]
   notes Note[]
   caseStatus String?
+  policies String[]
   involvedParties InvolvedParty[]
   documentLinks Json[]
   severity CaseSeverity @default(MEDIUM)
@@ -120,6 +121,7 @@ model Case extends Base {
 
 model Settings {
   id String @id @default(cuid())
+  policies String[]
   caseStatuses String[]
   caseInputSchema Json?
 

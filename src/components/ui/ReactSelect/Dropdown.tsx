@@ -23,6 +23,7 @@ interface ReactSelectProps<T> {
   varient?: "filter" | "default";
   isClearable?: boolean;
   autoFocus?: boolean;
+  defaultMenuIsOpen?: boolean;
 }
 
 const Dropdown = <T,>({
@@ -43,6 +44,7 @@ const Dropdown = <T,>({
   varient = "default",
   isClearable = false,
   autoFocus = false,
+  defaultMenuIsOpen = false,
 }: ReactSelectProps<T>) => {
   return (
     <div className="form-control text-base-content">
@@ -76,6 +78,7 @@ const Dropdown = <T,>({
         theme={getTheme}
         onBlur={onBlur}
         autoFocus={autoFocus}
+        defaultMenuIsOpen={defaultMenuIsOpen}
       />
     </div>
   );

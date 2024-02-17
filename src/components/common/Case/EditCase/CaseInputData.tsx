@@ -53,7 +53,7 @@ const CaseInputData = ({
       className="Mui-Object-NoSpacing"
     >
       <div className="flex justify-end space-x-2 pt-2">
-        {Object.keys(settings?.caseInputSchema ?? {}).length > 0 && (
+        {Object.keys(settings?.caseInputSchema ?? {}).length > 0 && isDirty && (
           <>
             <Button
               variant="ghost"
@@ -61,11 +61,10 @@ const CaseInputData = ({
               onClick={() => {
                 setFormData(data ?? {});
               }}
-              disabled={!isDirty}
             >
               Discard
             </Button>
-            <Button disabled={!isDirty}>Save</Button>
+            <Button>Save</Button>
           </>
         )}
       </div>

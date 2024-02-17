@@ -1,7 +1,8 @@
 "use server";
-import { Prisma } from "@prisma/client";
+import { CaseLogType, CaseSeverity, Prisma } from "@prisma/client";
 import { SecurePrisma } from "../prisma";
 import { CaseFiltersValueProps } from "../types/case";
+import { findDelta } from "../constants/delta";
 
 export const loadCases = async (filters?: CaseFiltersValueProps) => {
   const prisma = await SecurePrisma();
@@ -44,7 +45,68 @@ export const createCase = async (
 export const updateCase = async (data: Prisma.CaseUpdateArgs) => {
   const prisma = await SecurePrisma();
 
-  return prisma.case.update(data);
+  return prisma.$transaction(async (tx) => {
+    const prevCase = await tx.case.findFirst({
+      where: { id: data.data.id as string },
+      select: {
+        policies: true,
+        severity: true,
+      },
+    });
+
+    const caseData = await tx.case.update(data);
+
+    const policyDelta = findDelta<{ id: string }>(
+      prevCase?.policies?.map((id: string) => ({ id })),
+      caseData.policies.map((id) => ({ id }))
+    );
+
+    const caseLog = {
+      fromValue: "",
+      toValue: "",
+      caseId: caseData.id,
+      createdById: caseData.createdById,
+    };
+
+    const caseLogs = [
+      ...(policyDelta.create.length
+        ? [
+            {
+              ...caseLog,
+              fieldName: "policies",
+              type: CaseLogType.ADD,
+              toValue: JSON.stringify(policyDelta.create.map(({ id }) => id)),
+            },
+          ]
+        : []),
+      ...(policyDelta.delete.length
+        ? [
+            {
+              ...caseLog,
+              fieldName: "policies",
+              type: CaseLogType.DELETE,
+              fromValue: JSON.stringify(prevCase?.policies ?? []),
+              toValue: JSON.stringify(policyDelta.delete.map(({ id }) => id)),
+            },
+          ]
+        : []),
+      ...(prevCase?.severity !== caseData.severity
+        ? [
+            {
+              ...caseLog,
+              fieldName: "severity",
+              type: CaseLogType.UPDATE,
+              fromValue: prevCase?.severity ?? CaseSeverity.MEDIUM,
+              toValue: caseData.severity,
+            },
+          ]
+        : []),
+    ];
+
+    if (caseLogs.length) prisma.caseLog.createMany({ data: caseLogs });
+
+    return caseData;
+  });
 };
 
 export const loadCasesByIdentifier = async (identifier: string) => {
