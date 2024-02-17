@@ -9,6 +9,7 @@ export const Input = ({
   onChange = () => undefined,
   onBlur = () => undefined,
   isDisabled = false,
+  autoFocus = false,
 }: {
   id?: string;
   value?: string;
@@ -20,13 +21,16 @@ export const Input = ({
   onChange?: (value: string) => void;
   onBlur?: () => void;
   isDisabled?: boolean;
+  autoFocus?: boolean;
 }) => {
   return (
     <div className="form-control w-full">
-      <label className="label label-text justify-start" htmlFor={name}>
-        {label}
-        {required ? <span className="text-error text-sm ml-1">*</span> : null}
-      </label>
+      {label && (
+        <label className="label label-text justify-start" htmlFor={name}>
+          {label}
+          {required ? <span className="text-error text-sm ml-1">*</span> : null}
+        </label>
+      )}
       <input
         type="text"
         id={id}
@@ -38,6 +42,7 @@ export const Input = ({
         onBlur={onBlur}
         required={required}
         disabled={isDisabled}
+        autoFocus={autoFocus}
       />
     </div>
   );

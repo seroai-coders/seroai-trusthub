@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { UserProvider } from "@auth0/nextjs-auth0/client";
 import { Inter } from "next/font/google";
 import "./globals.css";
+import "ag-grid-community/styles/ag-grid.css";
+import "ag-grid-community/styles/ag-theme-quartz.css";
 
 const inter = Inter({
   subsets: ["latin"],

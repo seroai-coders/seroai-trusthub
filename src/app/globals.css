@@ -31,3 +31,38 @@
     @apply !mt-0 !py-0;
   }
 }
+
+.ag-theme-quartz {
+  & .ag-header-icon.ag-header-cell-menu-button {
+    opacity: 1 !important;
+  }
+
+  & .ag-full-width-row {
+    overflow: auto !important;
+  }
+
+  & .ag-cell-wrapper {
+    height: 100%;
+  }
+
+  & .cell-no-border {
+    &.ag-cell:focus {
+      border: none !important;
+      outline: none;
+    }
+  }
+
+  & .ag-cell-value {
+    cursor: auto;
+  }
+}
+
+.ag-content-hide {
+  & .ag-center-cols-viewport {
+    min-height: 0px !important;
+  }
+
+  & .ag-overlay-no-rows-center {
+    display: none;
+  }
+}

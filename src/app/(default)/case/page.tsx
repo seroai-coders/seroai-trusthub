@@ -1,10 +1,11 @@
 import { CaseFilters } from "@/components/common/Case/CaseFilters";
-import CaseList from "@/components/common/Case/CaseList";
+import CaseList from "@/components/common/Case/CaseList/CaseList";
 import { CreateCase } from "@/components/common/Case/CreateCase";
 import { createCase } from "@/lib/api/case";
 import { loadSettings } from "@/lib/api/settings";
 import { loadUsers } from "@/lib/api/users";
 import { CaseFiltersValueProps } from "@/lib/types/case";
+import { Prisma } from "@prisma/client";
 
 const mapSearchParamsToFilters = ({
   assignedTo,
@@ -23,10 +24,17 @@ export default async function Page({
 }) {
   const [settings, users] = await Promise.all([loadSettings(), loadUsers()]);
 
+  const onCreateCase = async (
+    data: Prisma.CaseCreateInput | Prisma.CaseUncheckedCreateInput
+  ) => {
+    "use server";
+    return createCase(data);
+  };
+
   return (
     <div className="px-20">
       <div className="flex items-center justify-between mb-8">
-        <CreateCase createCase={createCase} />
+        <CreateCase createCase={onCreateCase} />
       </div>
       <CaseFilters
         caseStatuses={settings?.caseStatuses ?? []}

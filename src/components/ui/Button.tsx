@@ -6,10 +6,7 @@ const buttonVariants = cva("btn", {
     variant: {
       secondary: "btn-outline",
       ghost: "btn-outline border-0",
-      square: "btn-square",
-      squareSecondary: "btn-square btn-outline",
-      circle: "btn-circle",
-      circleSecondary: "btn-circle btn-outline",
+      iconGhost: "btn-square btn-outline border-0",
     },
     color: {
       neutral: "btn-neutral",

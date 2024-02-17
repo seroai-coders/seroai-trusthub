@@ -1,3 +1,4 @@
+"use server";
 import { Prisma } from "@prisma/client";
 import { SecurePrisma } from "../prisma";
 import { CaseFiltersValueProps } from "../types/case";
@@ -16,13 +17,34 @@ export const loadCases = async (filters?: CaseFiltersValueProps) => {
   });
 };
 
+export const findCaseById = async (caseId: string) => {
+  const prisma = await SecurePrisma();
+
+  return prisma.case.findFirst({
+    include: {
+      createdBy: true,
+      involvedParties: {
+        include: { identifiers: true },
+      },
+    },
+    where: {
+      id: caseId,
+    },
+  });
+};
+
 export const createCase = async (
   data: Prisma.CaseCreateInput | Prisma.CaseUncheckedCreateInput
 ) => {
-  "use server";
   const prisma = await SecurePrisma();
 
   return prisma.case.create({ data });
+};
+
+export const updateCase = async (data: Prisma.CaseUpdateArgs) => {
+  const prisma = await SecurePrisma();
+
+  return prisma.case.update(data);
 };
 
 export const loadCasesByIdentifier = async (identifier: string) => {
@@ -36,4 +58,42 @@ export const loadCasesByIdentifier = async (identifier: string) => {
     },
     orderBy: { createdAt: "desc" },
   });
+};
+
+export const createNote = async (data: Prisma.NoteCreateArgs) => {
+  const prisma = await SecurePrisma();
+
+  return prisma.note.create(data);
+};
+
+export const updateNote = async (data: Prisma.NoteUpdateArgs) => {
+  const prisma = await SecurePrisma();
+
+  return prisma.note.update(data);
+};
+
+export const createCaseLog = async (data: Prisma.CaseLogCreateArgs) => {
+  const prisma = await SecurePrisma();
+
+  return prisma.caseLog.create(data);
+};
+
+export const loadCaseLogs = async (caseId: string) => {
+  const prisma = await SecurePrisma();
+
+  const options = {
+    where: { caseId },
+    include: { createdBy: true },
+    orderBy: { createdAt: "desc" },
+  };
+
+  const [caseLogs, notes] = await Promise.all([
+    prisma.caseLog.findMany(options as Prisma.CaseLogFindManyArgs),
+    prisma.note.findMany(options as Prisma.NoteFindManyArgs),
+  ]);
+
+  return [
+    ...caseLogs,
+    ...notes.map((item) => ({ ...item, fieldName: "note" })),
+  ].sort((a, b) => new Date(b.createdAt).valueOf() - a.createdAt.valueOf());
 };
