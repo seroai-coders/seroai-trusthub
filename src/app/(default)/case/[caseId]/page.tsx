@@ -27,7 +27,6 @@ export default async function CasePage({
 }: {
   params: { caseId: string };
 }) {
-  console.log(caseId);
   const [caseData, users, settings] = await Promise.all([
     findCaseById(caseId),
     loadUsers(),

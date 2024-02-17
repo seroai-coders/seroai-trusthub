@@ -61,13 +61,6 @@ export const updateCase = async (data: Prisma.CaseUpdateArgs) => {
       caseData.policies.map((id) => ({ id }))
     );
 
-    console.log(
-      "policyDelta**********************************",
-      prevCase?.policies,
-      caseData.policies,
-      policyDelta
-    );
-
     const caseLog = {
       fromValue: "",
       toValue: "",
