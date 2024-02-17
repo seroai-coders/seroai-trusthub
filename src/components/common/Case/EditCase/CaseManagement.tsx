@@ -18,6 +18,7 @@ import { DocumentLink, DocumentLinks } from "./DocumentLinks";
 import InvolvedParties from "./InvolvedParties";
 import { useLoader } from "@/lib/hooks/useLoader";
 import { useNotification } from "@/lib/hooks/useNotification";
+import { Policies } from "./Policies";
 
 const CaseManagement = ({
   data,
@@ -93,6 +94,11 @@ const CaseManagement = ({
             value={data?.caseStatus}
             onChange={(caseStatus) => onSave({ caseStatus })}
             caseStatuses={settings?.caseStatuses ?? []}
+          />
+          <Policies
+            value={data?.policies ?? []}
+            onChange={(policies) => onSave({ policies })}
+            policies={settings?.policies ?? []}
           />
         </div>
         <Divider />

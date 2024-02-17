@@ -111,6 +111,7 @@ model Case {
     caseLogs CaseLog[]
     notes Note[]
     caseStatus String?
+    policies String[]
     involvedParties InvolvedParty[]
     documentLinks Json[]
     severity CaseSeverity @default(MEDIUM)
@@ -123,6 +124,7 @@ model Case {
 /// @@allow('all', auth().role == Admin)
 model Settings {
     id String @id() @default(cuid())
+    policies String[]
     caseStatuses String[]
     caseInputSchema Json?
 }

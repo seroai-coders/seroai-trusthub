@@ -21,6 +21,11 @@ interface ReactSelectProps<T> {
   onAdd?: () => void;
   showAddButton?: boolean;
   addButtonLabel?: string;
+  placeholder?: string;
+  autoFocus?: boolean;
+  defaultMenuIsOpen?: boolean;
+  onBlur?: () => void;
+  closeMenuOnSelect?: boolean;
 }
 
 const ReactSelect = <T,>({
@@ -36,6 +41,11 @@ const ReactSelect = <T,>({
   name,
   label = "",
   isRequired = false,
+  placeholder = "Select...",
+  autoFocus = false,
+  defaultMenuIsOpen = false,
+  onBlur,
+  closeMenuOnSelect = true,
 }: ReactSelectProps<T>) => {
   return (
     <div className={clsx("form-control w-full text-base-content")}>
@@ -68,8 +78,13 @@ const ReactSelect = <T,>({
         components={{
           ...(isDisabled ? { DropdownIndicator: null } : {}),
         }}
+        placeholder={placeholder}
+        autoFocus={autoFocus}
+        defaultMenuIsOpen={defaultMenuIsOpen}
+        onBlur={onBlur}
         aria-labelledby={name}
         theme={getTheme}
+        closeMenuOnSelect={closeMenuOnSelect}
       />
     </div>
   );

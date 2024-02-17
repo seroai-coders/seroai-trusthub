@@ -29,7 +29,7 @@ export const ActivityLog = ({
           "medium",
           "short"
         )} - `}</span>
-        <span className="font-semibold">{createdBy?.name}</span>
+        <span className="font-semibold mr-1">{createdBy?.name}</span>
         <span>{getAction(type)} the </span>
         <span className="font-semibold">{fieldName}</span>
       </div>

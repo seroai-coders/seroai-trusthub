@@ -2,6 +2,7 @@
 import { CaseLogType, CaseSeverity, Prisma } from "@prisma/client";
 import { SecurePrisma } from "../prisma";
 import { CaseFiltersValueProps } from "../types/case";
+import { findDelta } from "../constants/delta";
 
 export const loadCases = async (filters?: CaseFiltersValueProps) => {
   const prisma = await SecurePrisma();
@@ -45,26 +46,71 @@ export const updateCase = async (data: Prisma.CaseUpdateArgs) => {
   const prisma = await SecurePrisma();
 
   return prisma.$transaction(async (tx) => {
-    const caseData = await tx.case.update(data);
-
-    const [log] = await tx.caseLog.findMany({
-      where: { fieldName: "severity", caseId: caseData.id },
-      orderBy: { createdAt: "desc" },
-      take: 1,
+    const prevCase = await tx.case.findFirst({
+      where: { id: data.data.id as string },
+      select: {
+        policies: true,
+        severity: true,
+      },
     });
 
-    if (log?.toValue !== caseData?.severity) {
-      prisma.caseLog.create({
-        data: {
-          caseId: caseData.id,
-          createdById: caseData.createdById,
-          fieldName: "severity",
-          type: CaseLogType.UPDATE,
-          fromValue: log?.toValue ?? CaseSeverity.MEDIUM,
-          toValue: caseData?.severity ?? "",
-        },
-      });
-    }
+    const caseData = await tx.case.update(data);
+
+    const policyDelta = findDelta<{ id: string }>(
+      prevCase?.policies?.map((id: string) => ({ id })),
+      caseData.policies.map((id) => ({ id }))
+    );
+
+    console.log(
+      "policyDelta**********************************",
+      prevCase?.policies,
+      caseData.policies,
+      policyDelta
+    );
+
+    const caseLog = {
+      fromValue: "",
+      toValue: "",
+      caseId: caseData.id,
+      createdById: caseData.createdById,
+    };
+
+    const caseLogs = [
+      ...(policyDelta.create.length
+        ? [
+            {
+              ...caseLog,
+              fieldName: "policies",
+              type: CaseLogType.ADD,
+              toValue: JSON.stringify(policyDelta.create.map(({ id }) => id)),
+            },
+          ]
+        : []),
+      ...(policyDelta.delete.length
+        ? [
+            {
+              ...caseLog,
+              fieldName: "policies",
+              type: CaseLogType.DELETE,
+              fromValue: JSON.stringify(prevCase?.policies ?? []),
+              toValue: JSON.stringify(policyDelta.delete.map(({ id }) => id)),
+            },
+          ]
+        : []),
+      ...(prevCase?.severity !== caseData.severity
+        ? [
+            {
+              ...caseLog,
+              fieldName: "severity",
+              type: CaseLogType.UPDATE,
+              fromValue: prevCase?.severity ?? CaseSeverity.MEDIUM,
+              toValue: caseData.severity,
+            },
+          ]
+        : []),
+    ];
+
+    if (caseLogs.length) prisma.caseLog.createMany({ data: caseLogs });
 
     return caseData;
   });

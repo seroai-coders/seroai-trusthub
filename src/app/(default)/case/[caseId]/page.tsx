@@ -87,7 +87,7 @@ export default async function CasePage({
             </div>
           </div>
           <div className="px-20 pb-6 flex items-end">
-            <CaseTimeline caseId={caseId as string} />
+            <CaseTimeline caseId={caseId as string} settings={settings} />
           </div>
         </div>
       </div>
